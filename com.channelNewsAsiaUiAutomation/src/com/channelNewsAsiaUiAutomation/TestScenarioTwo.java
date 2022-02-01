@@ -9,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 
 import Locators.pageLocators;
 import junit.framework.Assert;
@@ -42,11 +43,11 @@ System.setProperty("webdriver.chrome.driver", "C:\\Users\\AKSHAY\\Downloads\\chr
 		
 		Thread.sleep(3000);
 		
-		driver.findElement(By.xpath("//span[@class='all-section-menu main-menu__link']")).click();
+		driver.findElement(By.xpath(pageLocators.AllScetions)).click();
 		
 		Thread.sleep(3000);
 		
-		WebElement el =  driver.findElement(By.xpath("//ul[@class='hamburger-menu hamburger-menu--sub hamburger-menu--sub-1']/li/a[@href='/singapore'][1]"));
+		WebElement el =  driver.findElement(By.xpath(pageLocators.Singapore));
 
 		
 		JavascriptExecutor j = (JavascriptExecutor) driver;
@@ -57,7 +58,9 @@ System.setProperty("webdriver.chrome.driver", "C:\\Users\\AKSHAY\\Downloads\\chr
 		Thread.sleep(3000);
 		
 		
-		WebElement el2 = driver.findElement(By.xpath("//a[@class='h3__link h3__link-- list-object__heading-link'][1]"));
+		WebElement el2 = driver.findElement(By.xpath(pageLocators.SingaporeNews));
+		
+		String headlines = el2.getText();
 		
 		JavascriptExecutor j2 = (JavascriptExecutor) driver;
 		j2.executeScript("arguments[0].click();", el2);
@@ -65,6 +68,53 @@ System.setProperty("webdriver.chrome.driver", "C:\\Users\\AKSHAY\\Downloads\\chr
 		Assert.assertTrue(true);
 		
 		System.out.println("After clicking on the Singapore news");
+		
+		
+		
+		WebElement newHeadlineAfterClick = driver.findElement(By.xpath(pageLocators.newHeadlineAfterClick));
+
+		String headlinesAftrClick = newHeadlineAfterClick.getText();
+		
+		if (headlines.equalsIgnoreCase(headlinesAftrClick)) {
+
+			Assert.assertTrue("Verified we are on the expected Page", true);
+
+			Assert.assertEquals(headlines, headlinesAftrClick);
+
+			System.out.println("We are on the expected page");
+		}
+
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+		JavascriptExecutor jse6 = (JavascriptExecutor) driver;
+
+		jse6.executeScript("window.scrollBy(0,8500)", "");
+
+		
+
+		
+
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+		Actions actions = new Actions(driver);
+
+		actions.moveToElement(driver.findElement(
+				By.xpath(pageLocators.ReadFullArticle)));
+
+		WebElement el1 = driver.findElement(
+				By.xpath(pageLocators.ReadFullArticle));
+
+		jse6.executeScript("arguments[0].scrollIntoView();", el1);
+
+		JavascriptExecutor j1 = (JavascriptExecutor) driver;
+		j.executeScript("arguments[0].click();", el1);
+		
+		Assert.assertTrue("Clicked on Read Full Article", true);
+		
+		System.out.println("Clicked on Read Full Article");
+
+		
+		
 		
 		
 		
